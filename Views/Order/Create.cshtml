@@ -1,0 +1,104 @@
+﻿@model PedidoViewModel
+
+@using (Html.BeginForm())
+{
+    <div class="mb-3">
+        @Html.LabelFor(m => m.ClienteId, "Cliente", new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.ClienteId, Model.Clientes, "Selecione um cliente", new { @class = "form-select" })
+    </div>
+
+    <hr />
+
+    <!-- ComboBox e quantidade para adicionar novo item -->
+    <div class="row align-items-end mb-3">
+        <div class="col-md-6">
+            <label class="form-label" for="produtoPrincipal">Produto</label>
+            <select id="produtoPrincipal" class="form-select">
+                <option value="">-- Selecione um produto --</option>
+                @foreach (var produto in Model.Produtos)
+                {
+                    <option value="@produto.Value">@produto.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="quantidadePrincipal" class="form-label">Quantidade</label>
+            <input type="number" id="quantidadePrincipal" min="1" value="1" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-success mt-3" onclick="produtoSelecionado()">Adicionar</button>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- Lista/grid de itens adicionados -->
+    <div id="itensContainer">
+        @for (int i = 0; i < Model.Itens.Count; i++)
+        {
+            <div class="row align-items-end mb-3 item">
+                <div class="col-md-6">
+                    @Html.HiddenFor(m => m.Itens[i].ProdutoId)
+                    <label class="form-label">Produto</label>
+                    <input type="text" class="form-control" value="@Model.Produtos.FirstOrDefault(p => p.Value == Model.Itens[i].ProdutoId.ToString())?.Text" readonly />
+                </div>
+
+                <div class="col-md-3 d-flex flex-column">
+                    <label class="form-label">Quantidade</label>
+                    <input type="number" name="Itens[@i].Quantidade" value="@Model.Itens[i].Quantidade" min="1" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-danger mt-3" onclick="this.closest('.item').remove()">Remover</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr />
+    <button type="submit" class="btn btn-primary">Salvar Pedido</button>
+}
+
+@section Scripts {
+    <script>
+        let index = @Model.Itens.Count;
+        const produtos = @Html.Raw(Json.Serialize(Model.Produtos));
+
+        function produtoSelecionado() {
+            const select = document.getElementById('produtoPrincipal');
+            const produtoId = select.value;
+            const produtoTexto = select.options[select.selectedIndex].text;
+            const quantidade = document.getElementById('quantidadePrincipal').value;
+
+            if (!produtoId || quantidade < 1) return;
+
+            const html = `
+                        <div class="row align-items-end mb-3 item">
+                            <div class="col-md-6">
+                                <input type="hidden" name="Itens[${index}].ProdutoId" value="${produtoId}" />
+                                <label class="form-label">Produto</label>
+                                <input type="text" class="form-control" value="${produtoTexto}" readonly />
+                            </div>
+
+                            <div class="col-md-3 d-flex flex-column">
+                                <label class="form-label">Quantidade</label>
+                                <input type="number" name="Itens[${index}].Quantidade" min="1" value="${quantidade}" class="form-control" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-danger mt-3" onclick="this.closest('.item').remove()">Remover</button>
+                            </div>
+                        </div>
+                    `;
+
+            document.getElementById('itensContainer').insertAdjacentHTML('beforeend', html);
+            index++;
+
+            // Resetar campos
+            select.value = '';
+            document.getElementById('quantidadePrincipal').value = 1;
+        }
+    </script>
+}

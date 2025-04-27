@@ -1,0 +1,38 @@
+﻿@model PedidosLanche.Models.Produto
+
+<div>
+    <h1>Criar Produtos</h1>
+    <partial name="_ValidationScriptsPartial" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div>
+            <label>Nome</label>
+
+            <input class="form-control" type="text" asp-for="Nome">
+            <span asp-validation-for="Nome"></span>
+        </div>
+         <div>
+            <label>Valor</label>
+            <input class="form-control" type="number" asp-for="Valor">
+            <span asp-validation-for="Valor"></span>
+        </div>
+        <div>
+            <label>Imagem</label>
+            <input type="file" asp-for="Imagem" class="form-control" accept="image/*">
+            <span asp-validation-for="Imagem"></span>
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+
+    </form>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+
+
+</div>

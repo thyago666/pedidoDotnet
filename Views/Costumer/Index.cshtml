@@ -1,0 +1,32 @@
+﻿@model IEnumerable<PedidosLanche.Models.Cliente>
+
+<div class="container">
+
+    <h1>Clientes</h1>
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Adicionar Clientes</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Telefone</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@cliente.ClienteId"> <i class="fas fa-edit"></i> </a> |
+                        <a asp-action="Delete" asp-route-id="@cliente.ClienteId"><i class="fas fa-trash"></i></a> |
+                        <a asp-action="Details" asp-route-id="@cliente.ClienteId"><ion-icon name="easel-outline" style="font-size: 20px; vertical-align: middle;"></ion-icon></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

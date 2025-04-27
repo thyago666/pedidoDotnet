@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Produtos Mais Vendidos";
+    var labels = ViewBag.Labels as List<string>;
+    var dados = ViewBag.Dados as List<int>;
+}
+
+<h2>Produtos Mais Vendidos</h2>
+
+<canvas id="graficoMaisVendidos" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('graficoMaisVendidos').getContext('2d');
+
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(labels)),
+            datasets: [{
+                label: 'Quantidade Vendida',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(dados)),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

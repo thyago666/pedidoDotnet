@@ -1,0 +1,56 @@
+﻿@model PedidosLanche.Models.Produto
+
+<h1>Detalhes do Produto</h1>
+
+<div>
+    @if (!string.IsNullOrEmpty(Model.ImagemUrl))
+    {
+        <img src="@Model.ImagemUrl" alt="@Model.Nome" style="max-width: 200px;" />
+    }
+
+    <h4><b>Nome:</b> @Model.Nome</h4>
+    <p><b>Valor:</b> @Model.Valor</p>
+    <p><b>Data de Criação:</b> @Model.DataDeCriacao</p>
+    <p><b>Data de Alteração:</b> @Model.DataDeAlteracao</p>
+</div>
+
+<hr />
+
+<h4>Alterar Imagem</h4>
+
+<form asp-action="AlterarImagem" asp-controller="Products" enctype="multipart/form-data" method="post">
+    <input type="hidden" name="id" value="@Model.ProdutoId" />
+
+    <div class="form-group mb-3">
+        <label for="imagem">Nova imagem:</label>
+        <input type="file" id="imagem" name="imagem" class="form-control" onchange="previewImage(event)" />
+    </div>
+
+    <!-- Pré-visualização da imagem -->
+    <div id="imagePreview" style="display:none; margin-top:10px;">
+        <h5>Pré-visualização:</h5>
+        <img id="preview" src="" alt="Imagem selecionada" style="max-width: 200px;" />
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-success">Atualizar Imagem</button>
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
+    </div>
+</form>
+
+<script>
+    function previewImage(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var preview = document.getElementById('preview');
+            preview.src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

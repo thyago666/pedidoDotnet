@@ -1,0 +1,26 @@
+﻿@model PedidosLanche.Models.Cliente
+
+<h1>Detalhes do Cliente</h1>
+
+<div>
+ 
+    <h4><b>Nome:</b> @Model.Nome</h4>
+    <p><b>Telefone:</b> @Model.Telefone</p>
+    <p><b>Data de Criação:</b> @Model.DataDeCriacao</p>
+    <p><b>Data de Alteração:</b> @Model.DataDeAlteracao</p>
+</div>
+
+<hr />
+
+
+<form asp-action="Detail" asp-controller="Costumer" >
+    <input type="hidden" name="id" value="@Model.ClienteId" />
+
+ 
+    <div class="d-flex gap-2 mt-3">
+     
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
+    </div>
+</form>
+
+

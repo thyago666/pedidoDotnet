@@ -1,0 +1,46 @@
+﻿@model PedidosPorClienteViewModel
+
+<form method="get" asp-action="ListaPorCliente">
+    <label>Cliente:</label>
+    @Html.DropDownListFor(m => m.ClienteId, Model.Clientes, "-- Selecione --", new { onchange = "this.form.submit()",@class = "form-select" })
+</form>
+
+<hr />
+
+@if (Model.Pedidos != null && Model.Pedidos.Any())
+{
+    <h4>Pedidos do cliente</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Itens</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pedido in Model.Pedidos)
+            {
+                <tr>
+                    <td>@pedido.DataPedido.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <ul>
+                            @foreach (var item in pedido.Itens)
+                            {
+                                <li>@item.Produto.Nome - @item.Quantidade x @item.PrecoUnitario.ToString("C")</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        @pedido.Itens.Sum(i => i.Quantidade * i.PrecoUnitario).ToString("C")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model.ClienteId.HasValue)
+{
+    <p>Este cliente ainda não tem pedidos.</p>
+}
+

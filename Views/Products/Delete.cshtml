@@ -1,0 +1,17 @@
+﻿@model PedidosLanche.Models.Produto
+
+
+<h1>Excluir Produto</h1>
+
+<div>
+    <h4>Tem certeza que deseja excluir este produto?</h4>
+    <div>
+        <h4>@Model.Nome</h4>
+        <p>Valor: @Model.Valor</p>
+     </div>
+    <form asp-action="DeleteConfirmed">
+        <input type="hidden" asp-for="ProdutoId" />
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
+    </form>
+</div>
